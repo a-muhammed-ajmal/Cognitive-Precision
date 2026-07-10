@@ -1,6 +1,8 @@
 'use client';
 import { useSchulteStore } from '@/src/features/schulte/store/schulteStore';
 import Link from 'next/link';
+import { PartyPopper, RotateCcw, BarChart3, Home, ArrowLeft } from 'lucide-react';
+import { buttonStyles } from '@/src/components/buttonStyles';
 
 export default function ResultsPage() {
   const { sessions } = useSchulteStore();
@@ -8,35 +10,37 @@ export default function ResultsPage() {
 
   if (!lastSession) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#F5F0E8]">
-        <p>No results found.</p>
-        <Link href="/" className="text-blue-600">Go Home</Link>
+      <main className="graph-bg flex min-h-screen flex-col items-center justify-center gap-4 bg-surface p-6">
+        <p className="text-sm text-navy/70">No results found.</p>
+        <Link href="/" className="flex items-center gap-1.5 text-sm font-semibold text-brand-text">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Go Home
+        </Link>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#F5F0E8]">
-      <h1 className="text-4xl font-bold text-[#0F5238] mb-8">Complete!</h1>
-      <div className="text-6xl font-bold text-gray-900 mb-12">{lastSession.time.toFixed(2)}s</div>
-      
-      <div className="w-full max-w-sm flex flex-col gap-4">
-        <Link 
-          href="/game"
-          className="w-full py-4 px-6 bg-[#0F5238] text-white text-center rounded-xl font-semibold hover:bg-opacity-90"
-        >
+    <main className="graph-bg flex min-h-screen flex-col items-center justify-center bg-surface p-6">
+      <div className="fade-in flex flex-col items-center text-center">
+        <PartyPopper className="mb-3 h-8 w-8 text-brand" aria-hidden="true" />
+        <h1 className="text-xl font-bold text-navy">Complete!</h1>
+        <div className="mt-4 font-mono text-[48px] font-extrabold tracking-tight text-navy">
+          {lastSession.time.toFixed(2)}s
+        </div>
+      </div>
+
+      <div className="slide-up mt-12 flex w-full max-w-sm flex-col gap-3">
+        <Link href="/game" className={buttonStyles('primary')}>
+          <RotateCcw className="h-4 w-4" aria-hidden="true" />
           Play Again
         </Link>
-        <Link 
-          href="/stats"
-          className="w-full py-4 px-6 border border-[#0F5238] text-[#0F5238] text-center rounded-xl font-semibold hover:bg-gray-50"
-        >
+        <Link href="/stats" className={buttonStyles('secondary')}>
+          <BarChart3 className="h-4 w-4" aria-hidden="true" />
           View Stats
         </Link>
-        <Link 
-          href="/"
-          className="w-full py-4 px-6 bg-gray-200 text-gray-800 text-center rounded-xl font-semibold hover:bg-gray-300"
-        >
+        <Link href="/" className={buttonStyles('neutral')}>
+          <Home className="h-4 w-4" aria-hidden="true" />
           Home
         </Link>
       </div>

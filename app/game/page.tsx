@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSchulteStore } from '@/src/features/schulte/store/schulteStore';
 import SchulteGrid from '@/src/features/schulte/components/SchulteGrid';
 import TimerDisplay from '@/src/features/schulte/components/TimerDisplay';
@@ -8,23 +8,31 @@ import { useRouter } from 'next/navigation';
 export default function GamePage() {
   const { startGame, isActive, nextNumber } = useSchulteStore();
   const router = useRouter();
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     startGame();
-  }, [startGame]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (!isActive) {
+    if (isActive) {
+      hasStartedRef.current = true;
+      return;
+    }
+    if (hasStartedRef.current) {
       router.push('/results');
     }
   }, [isActive, router]);
 
   return (
-    <main className="min-h-screen flex flex-col items-center p-6 bg-[#F5F0E8]">
-      <h1 className="text-2xl font-bold text-[#0F5238] mb-4">Find: {nextNumber}</h1>
-      <TimerDisplay />
-      
-      <div className="w-full mt-8">
+    <main className="graph-bg flex min-h-screen flex-col items-center bg-surface p-6">
+      <h1 className="text-xl font-bold text-navy">Find: {nextNumber}</h1>
+      <div className="mt-3">
+        <TimerDisplay />
+      </div>
+
+      <div className="slide-up mt-8 w-full">
         <SchulteGrid />
       </div>
     </main>

@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { Clock } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useSchulteStore } from '@/src/features/schulte/store/schulteStore';
 
 export default function TimerDisplay() {
@@ -16,8 +18,18 @@ export default function TimerDisplay() {
     return () => clearInterval(interval);
   }, [isActive, startTime]);
 
+  const isSlow = elapsed > 30;
+
   return (
-    <div className={`font-mono text-2xl ${elapsed > 30 ? 'text-red-500' : 'text-gray-700'}`}>
+    <div
+      className={cn(
+        'flex items-center gap-1.5 font-mono text-2xl font-semibold',
+        isSlow ? 'text-danger' : 'text-navy/70'
+      )}
+      role="timer"
+      aria-live="polite"
+    >
+      <Clock className="h-5 w-5" aria-hidden="true" />
       {elapsed.toFixed(2)}s
     </div>
   );
