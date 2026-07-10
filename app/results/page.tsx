@@ -1,7 +1,8 @@
 'use client';
 import { useSchulteStore } from '@/src/features/schulte/store/schulteStore';
 import Link from 'next/link';
-import { PartyPopper, RotateCcw, BarChart3, Home, ArrowLeft } from 'lucide-react';
+import { PartyPopper, Trophy, RotateCcw, BarChart3, Home, ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { buttonStyles } from '@/src/components/buttonStyles';
 
 export default function ResultsPage() {
@@ -20,12 +21,28 @@ export default function ResultsPage() {
     );
   }
 
+  const previousBest =
+    sessions.length > 1 ? Math.min(...sessions.slice(0, -1).map((s) => s.time)) : null;
+  const isNewBest = previousBest === null || lastSession.time < previousBest;
+
   return (
     <main className="graph-bg flex min-h-screen flex-col items-center justify-center bg-surface p-6">
       <div className="fade-in flex flex-col items-center text-center">
-        <PartyPopper className="mb-3 h-8 w-8 text-brand" aria-hidden="true" />
+        {isNewBest ? (
+          <span className="eyebrow mb-3 flex items-center gap-1.5">
+            <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+            New Best Time!
+          </span>
+        ) : (
+          <PartyPopper className="mb-3 h-8 w-8 text-brand" aria-hidden="true" />
+        )}
         <h1 className="text-xl font-bold text-navy">Complete!</h1>
-        <div className="mt-4 font-mono text-[48px] font-extrabold tracking-tight text-navy">
+        <div
+          className={cn(
+            'mt-4 font-mono text-[48px] font-extrabold tracking-tight',
+            isNewBest ? 'text-brand' : 'text-navy'
+          )}
+        >
           {lastSession.time.toFixed(2)}s
         </div>
       </div>

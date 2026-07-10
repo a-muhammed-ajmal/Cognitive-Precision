@@ -75,7 +75,7 @@ export const useSchulteStore = create<SchulteState>()(
     }),
     {
       name: 'schulte-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
